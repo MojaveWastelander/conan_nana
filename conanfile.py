@@ -1,4 +1,6 @@
 from conans import ConanFile, CMake
+from conans.tools import unzip, replace_in_file
+from shutil import which
 
 class NanaConan(ConanFile):
     name = "nana"
@@ -14,12 +16,20 @@ class NanaConan(ConanFile):
         self.run("git clone https://github.com/cnjinhao/nana.git")
     
     def requirements(self):
+        if self.options.enable_jpeg or self.options.enable_png:
+            if self.settings.os == "Windows":
+                if which("nasm") is None:
+                    self.output.warn("NASM is required to build libjpeg and libpng")
+                    if which("choco") is None:
+                        self.output.warn("Easiest way to install NASM is to use chocolatey")
+                    self.output.warn("Install NASM and add it to PATH, then try again")
+                    raise OSError("Nasm.exe not found in PATH")
         if self.options.enable_jpeg:
             self.requires("libjpeg-turbo/1.4.2@lasote/stable")
         
         if self.options.enable_png:
             self.requires("libpng/1.6.21@lasote/stable")
-        
+
     def build(self):
         cmake = CMake(self.settings)
         print("Compiler: %s %s" % (self.settings.compiler, self.settings.compiler.version))
