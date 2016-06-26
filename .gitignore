@@ -243,3 +243,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+__pycache__/*
+test_package/__pycache__/*

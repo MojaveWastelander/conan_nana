@@ -1,0 +1,5 @@
+[requires]
+nana/1.3.0@mojavewastelander/testing
+
+[generators]
+cmake
