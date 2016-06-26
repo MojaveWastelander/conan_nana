@@ -8,11 +8,18 @@ class NanaConan(ConanFile):
     options = {"enable_audio" : [True, False], "enable_png" : [True, False], "enable_jpeg" : [True, False]}
     default_options = "enable_audio=False", "enable_png=False", "enable_jpeg=False"
     license = "Boost"
-    url = ""
+    url = "https://github.com/MojaveWastelander/conan_nana"
     
     def source(self):
         self.run("git clone https://github.com/cnjinhao/nana.git")
-
+    
+    def requirements(self):
+        if self.options.enable_jpeg:
+            self.requires("libjpeg-turbo/1.4.2@lasote/stable")
+        
+        if self.options.enable_png:
+            self.requires("libpng/1.6.21@lasote/stable")
+        
     def build(self):
         cmake = CMake(self.settings)
         print("Compiler: %s %s" % (self.settings.compiler, self.settings.compiler.version))
