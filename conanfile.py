@@ -22,13 +22,12 @@ class NanaConan(ConanFile):
                     self.output.warn("NASM is required to build libjpeg and libpng")
                     if which("choco") is None:
                         self.output.warn("Easiest way to install NASM is to use chocolatey")
-                    self.output.warn("Install NASM and add it to PATH, then try again")
-                    raise OSError("Nasm.exe not found in PATH")
+                    self.output.warn("Install NASM and add it to PATH")
         if self.options.enable_jpeg:
             self.requires("libjpeg-turbo/1.4.2@lasote/stable")
         
         if self.options.enable_png:
-            self.requires("libpng/1.6.21@lasote/stable")
+            self.requires("libpng/1.6.23@lasote/stable")
 
     def build(self):
         cmake = CMake(self.settings)
@@ -36,7 +35,15 @@ class NanaConan(ConanFile):
         print("Arch: %s" % self.settings.arch)        
         cmake_command_line = cmake.command_line #.replace('-G "MinGW Makefiles"', '-G "Unix Makefiles"')
         lib_opt = "-DCMAKE_DEBUG_POSTFIX:STRING={0} -DCMAKE_RELEASE_POSTFIX:STRING={0}".format("r" if self.settings.build_type == "Release" else "d")
+
+        if self.options.enable_jpeg or self.options.enable_png:
+            replace_lines = '''cmake_minimum_required(VERSION 2.8)
+    include(../conanbuildinfo.cmake)
+    CONAN_BASIC_SETUP()
+    '''
+            replace_in_file("nana/CMakeLists.txt", "cmake_minimum_required(VERSION 2.8)", replace_lines)
         
+
         # process options
         if self.options.enable_audio:
             lib_opt += " -DENABLE_AUDIO:BOOL=ON"
@@ -66,6 +73,7 @@ class NanaConan(ConanFile):
         self.copy("*.*", dst="source", src="nana/source")
         self.copy("*.lib", dst="lib", src="Release")
         self.copy("*.lib", dst="lib", src="Debug")
+        self.copy("*.lib", dst="lib", src="lib")
         self.copy("*.a", dst="lib", src=".")
 
     def package_info(self):
