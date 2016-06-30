@@ -1,6 +1,5 @@
 from conans import ConanFile, CMake
 from conans.tools import unzip, replace_in_file
-from shutil import which
 
 class NanaConan(ConanFile):
     name = "nana"
@@ -16,13 +15,6 @@ class NanaConan(ConanFile):
         self.run("git clone https://github.com/cnjinhao/nana.git")
     
     def requirements(self):
-        if self.options.enable_jpeg or self.options.enable_png:
-            if self.settings.os == "Windows":
-                if which("nasm") is None:
-                    self.output.warn("NASM is required to build libjpeg and libpng")
-                    if which("choco") is None:
-                        self.output.warn("Easiest way to install NASM is to use chocolatey")
-                    self.output.warn("Install NASM and add it to PATH")
         if self.options.enable_jpeg:
             self.requires("libjpeg-turbo/1.4.2@lasote/stable")
         
@@ -79,6 +71,7 @@ class NanaConan(ConanFile):
     def package_info(self):
         print("Compiler: %s %s" % (self.settings.compiler, self.settings.compiler.version))
         print("Arch: %s" % self.settings.arch)      
-        print("Build_type: %s" % self.settings.build_type)      
-        print("Runtime: %s" % self.settings.compiler.runtime)
+        print("Build_type: %s" % self.settings.build_type)     
+        if self.settings.compiler == "Visual Studio":
+            print("Runtime: %s" % self.settings.compiler.runtime)
         self.cpp_info.libs = ["nana%s" % ("r" if self.settings.build_type == "Release" else "d")]

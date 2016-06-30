@@ -1,5 +1,6 @@
 #include <nana/gui.hpp>
 #include <nana/gui/widgets/label.hpp>
+#include <nana/gui/widgets/picture.hpp>
 int main()
 {
     using namespace nana;
@@ -14,7 +15,13 @@ int main()
     place layout(fm);
     //The div-text
     layout.div("vert<><<><here weight=80><>><>");
+#ifdef NANA_ENABLE_PNG
+	picture pic{ fm };
+	pic.load(paint::image("../../folder.png"));
+	layout["here"] << pic;
+#else
     layout["here"] << lb;
+#endif
     layout.collocate();
     fm.show();
     exec();
