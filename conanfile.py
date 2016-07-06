@@ -25,15 +25,12 @@ class NanaConan(ConanFile):
         cmake = CMake(self.settings)
         print("Compiler: %s %s" % (self.settings.compiler, self.settings.compiler.version))
         print("Arch: %s" % self.settings.arch)        
-        cmake_command_line = cmake.command_line
-        lib_opt = "-DCMAKE_DEBUG_POSTFIX:STRING={0} -DCMAKE_RELEASE_POSTFIX:STRING={0}".format("r" if self.settings.build_type == "Release" else "d")
-
-        if self.options.enable_jpeg or self.options.enable_png:
-            replace_lines = '''cmake_minimum_required(VERSION 2.8)
-    include(../conanbuildinfo.cmake)
-    CONAN_BASIC_SETUP()
-    '''
-            replace_in_file("nana/CMakeLists.txt", "cmake_minimum_required(VERSION 2.8)", replace_lines)
+        lib_opt = "-DCMAKE_DEBUG_POSTFIX:STRING={0} -DCMAKE_RELEASE_POSTFIX:STRING={0}".format("r" if self.settings.build_type == "Release" else "d")   
+        replace_lines = '''cmake_minimum_required(VERSION 2.8)
+include(../conanbuildinfo.cmake)
+conan_basic_setup()
+'''
+        replace_in_file("nana/CMakeLists.txt", "cmake_minimum_required(VERSION 2.8)", replace_lines)
         
 
         # process options
@@ -49,17 +46,7 @@ class NanaConan(ConanFile):
         if self.options.enable_jpeg:
             lib_opt += " -DENABLE_JPEG:BOOL=ON"
 
-        if self.settings.os == "Windows":
-            if self.settings.compiler == "Visual Studio":
-
-                if self.settings.arch == "x86_64":
-                    self.run('cmake %s/nana %s -G "Visual Studio %s Win64" %s' % (self.conanfile_directory, cmake.command_line, self.settings.compiler.version, lib_opt))
-                else:
-                    self.run('cmake %s/nana %s -G "Visual Studio %s" %s' % (self.conanfile_directory, cmake.command_line, self.settings.compiler.version, lib_opt))
-            else:
-                self.run('cmake %s/nana %s %s' % (self.conanfile_directory, cmake_command_line, lib_opt))
-        else:                
-                self.run('cmake %s/nana %s %s' % (self.conanfile_directory, cmake_command_line, lib_opt))
+        self.run('cmake %s/nana %s %s' % (self.conanfile_directory, cmake.command_line, lib_opt))
         self.run("cmake --build . %s" % cmake.build_config)
 
 
