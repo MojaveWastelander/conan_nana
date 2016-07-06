@@ -69,7 +69,7 @@ class NanaConan(ConanFile):
         self.copy("*.lib", dst="lib", src="Release")
         self.copy("*.lib", dst="lib", src="Debug")
         self.copy("*.lib", dst="lib", src="lib")
-        self.copy("*.a", dst="lib", src=".")
+        self.copy("*.a", dst="lib", src="lib")
 
     def package_info(self):
         print("Compiler: %s %s" % (self.settings.compiler, self.settings.compiler.version))
