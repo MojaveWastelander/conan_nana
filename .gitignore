@@ -245,3 +245,4 @@ ModelManifest.xml
 .fake/
 __pycache__/*
 test_package/__pycache__/*
+test_package/conanfile.pyc
