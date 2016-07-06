@@ -1,5 +1,5 @@
 [requires]
-nana/1.3.0@mojavewastelander/testing
+nana/1.3.0@mojavewastelander/stable
 
 [generators]
 cmake
