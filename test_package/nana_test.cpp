@@ -49,9 +49,9 @@ int main()
     using namespace nana;
 	form fm{ API::make_center(480,48) };
 	timer tm;
-    //It's unnecessary to specify a rectangle if useing
-    //layout management.
-    label lb{ fm};
+	timer auto_exit;
+	bool activity = false;
+	fm.events().click([&]() {activity = true; });
 
 #ifdef NANA_ENABLE_AUDIO
 	nana::audio::player player("../../sounds/113218__satrebor__click.wav");
@@ -59,13 +59,6 @@ int main()
 #endif	
 
 
-    lb.caption("Hello, world!");
-    //Set a background color, just for observation.
-    lb.bgcolor(colors::azure);
-    //Define a layout object for the form.
-//    place layout(fm);
-    //The div-text
-//    layout.div("<here>");
 #if defined(NANA_ENABLE_PNG) || defined(NANA_ENABLE_JPEG)
 	picture pic{ fm, rectangle{230, 0, 48, 48}};
 	pic.tooltip("Click to change picture");
@@ -78,7 +71,7 @@ int main()
 	fm.caption(vec_icons[0].wstring());
 	//layout["here"] << pic;
 
-	tm.interval(5000);
+	tm.interval(3000);
 	tm.start();
 
 	auto next_image = [&]()
@@ -105,9 +98,18 @@ int main()
 		next_image();
 	});
 #endif
-//    layout.collocate();
+
 #endif
 
+	auto_exit.interval(5000);
+	auto_exit.start();
+	auto_exit.elapse([&]()
+	{
+		if (!activity)
+		{
+			fm.close();
+		}
+	});
     fm.show();
     exec();
 }
