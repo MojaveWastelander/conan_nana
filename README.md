@@ -1,4 +1,4 @@
-[![Build Status](https://ci.appveyor.com/project/MojaveWastelander/conan-nana)](https://ci.appveyor.com/project/MojaveWastelander/conan-nana)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/MojaveWastelander/conan-nana)](https://ci.appveyor.com/project/MojaveWastelander/conan-nana)
 
 # conan_nana
 
