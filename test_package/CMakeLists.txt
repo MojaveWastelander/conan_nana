@@ -8,6 +8,10 @@ if (CONAN_LIBPNG_ROOT)
    add_definitions(-DNANA_ENABLE_PNG)
 endif(CONAN_LIBPNG_ROOT)
 
+if (CONAN_LIBJPEG-TURBO_ROOT)
+   add_definitions(-DNANA_ENABLE_JPEG)
+endif(CONAN_LIBJPEG-TURBO_ROOT)
+
 add_executable(nana_test nana_test.cpp)
 target_link_libraries(nana_test ${CONAN_LIBS})
 

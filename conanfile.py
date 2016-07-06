@@ -25,7 +25,7 @@ class NanaConan(ConanFile):
         cmake = CMake(self.settings)
         print("Compiler: %s %s" % (self.settings.compiler, self.settings.compiler.version))
         print("Arch: %s" % self.settings.arch)        
-        cmake_command_line = cmake.command_line #.replace('-G "MinGW Makefiles"', '-G "Unix Makefiles"')
+        cmake_command_line = cmake.command_line
         lib_opt = "-DCMAKE_DEBUG_POSTFIX:STRING={0} -DCMAKE_RELEASE_POSTFIX:STRING={0}".format("r" if self.settings.build_type == "Release" else "d")
 
         if self.options.enable_jpeg or self.options.enable_png:
@@ -39,13 +39,16 @@ class NanaConan(ConanFile):
         # process options
         if self.options.enable_audio:
             lib_opt += " -DENABLE_AUDIO:BOOL=ON"
+        else:
+            # Disable audio processing in nana
+            replace_in_file("nana/include/nana/config.hpp", "#define NANA_ENABLE_AUDIO", "//#define NANA_ENABLE_AUDIO")
         
         if self.options.enable_png:
             lib_opt += " -DENABLE_PNG:BOOL=ON"
         
         if self.options.enable_jpeg:
             lib_opt += " -DENABLE_JPEG:BOOL=ON"
-        
+
         if self.settings.os == "Windows":
             if self.settings.compiler == "Visual Studio":
 
