@@ -1,0 +1,53 @@
+os: linux
+services:
+   - docker
+sudo: required
+language: python
+env:
+  global:
+    - CONAN_UPLOAD=1
+    - CONAN_REFERENCE="nana/1.3.0"
+    - CONAN_USERNAME="mojavewastelander"
+    - CONAN_CHANNEL="stable"
+    - CONAN_TOTAL_PAGES=1
+    - CONAN_CURRENT_PAGE=1
+
+  matrix:
+    - CONAN_GCC_VERSIONS=4.9 CONAN_USE_DOCKER=1 
+    - CONAN_GCC_VERSIONS=5.2 CONAN_USE_DOCKER=1
+    - CONAN_GCC_VERSIONS=5.3 CONAN_USE_DOCKER=1
+matrix:
+  include:
+    - env: CXX=g++-5 CC=gcc-5
+      addons:
+        apt:
+          packages:
+            - g++-5
+            - libjpeg8-dev
+            - libpng-dev
+            - libasound2-dev
+            - alsa-utils
+            - alsa-oss
+            - libx11-dev
+            - libxft-dev
+          sources: 
+            - ubuntu-toolchain-r-test
+    - env: CXX=g++-4.9 CC=gcc-4.9
+      addons:
+        apt:
+          packages:
+            - g++-4.9
+            - libjpeg8-dev
+            - libpng-dev
+            - libasound2-dev
+            - alsa-utils
+            - alsa-oss
+            - libx11-dev
+            - libxft-dev
+          sources: 
+            - ubuntu-toolchain-r-test
+
+install:
+  - ./.travis/install.sh
+script:
+  - ./.travis/run.sh

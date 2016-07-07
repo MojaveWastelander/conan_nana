@@ -29,9 +29,16 @@
     <Compile Include="test_package\conanfile.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include=".travis\" />
     <Folder Include="test_package\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".travis.yml" />
+    <Content Include=".travis\install.sh" />
+    <Content Include=".travis\run.sh" />
+    <Content Include="appveyor.yml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="test_package\CMakeLists.txt" />
     <Content Include="test_package\conanfile.txt" />
     <Content Include="test_package\nana_test.cpp" />
