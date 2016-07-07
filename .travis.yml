@@ -47,6 +47,10 @@ matrix:
           sources: 
             - ubuntu-toolchain-r-test
 
+before_install:
+ - chmod +x ./.travis/install.sh
+ - chmod +x ./.travis/run.sh
+
 install:
   - ./.travis/install.sh
 script:
