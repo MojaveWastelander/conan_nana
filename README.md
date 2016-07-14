@@ -1,5 +1,5 @@
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/MojaveWastelander/conan_nana)](https://ci.appveyor.com/project/MojaveWastelander/conan-nana)
-
+[![Build Status](https://travis-ci.org/MojaveWastelander/conan_nana.svg)](https://travis-ci.org/MojaveWastelander/conan_nana)
 # conan_nana
 
 [Conan.io](https://conan.io) package for [Nana](https://github.com/cnjinhao/nana) library
