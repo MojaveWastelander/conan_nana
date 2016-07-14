@@ -11,13 +11,13 @@
     
 ## Upload packages to server
 
-    $ conan upload nana/1.3.0@mojavewastelander/stable --all
+    $ conan upload nana/1.3.0@MojaveWastelander/stable --all
     
 ## Reuse the packages
 
 ### Basic setup
 
-    $ conan install nana/1.3.0@mojavewastelander/stable
+    $ conan install nana/1.3.0@MojaveWastelander/stable
 
 ### Package basic test
     $ conan test_package -o nana:enable_png=True -o nana:enable_jpeg=True -o nana:enable_audio=True    
@@ -27,7 +27,7 @@
 If you handle multiple dependencies in your project is better to add a *conanfile.txt*
     
     [requires]
-    nana/1.3.0@mojavewastelander/stable
+    nana/1.3.0@MojaveWastelander/stable
 
     [options]
     nana:enable_png=True
