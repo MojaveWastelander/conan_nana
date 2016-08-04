@@ -4,7 +4,7 @@ from conans.tools import unzip, replace_in_file
 class NanaConan(ConanFile):
     name = "nana"
     generators = "cmake"
-    version = "1.3.0"
+    version = "1.4.0"
     settings = "os", "compiler", "build_type", "arch"
     options = {"enable_audio" : [True, False], "enable_png" : [True, False], "enable_jpeg" : [True, False]}
     default_options = "enable_audio=False", "enable_png=False", "enable_jpeg=False"
@@ -31,28 +31,24 @@ include(../conanbuildinfo.cmake)
 conan_basic_setup()
 '''
         replace_in_file("nana/CMakeLists.txt", "cmake_minimum_required(VERSION 2.8)", replace_lines)
-        
 
         # process options
         if self.options.enable_audio:
-            lib_opt += " -DENABLE_AUDIO:BOOL=ON"
-        else:
-            # Disable audio processing in nana
-            replace_in_file("nana/include/nana/config.hpp", "#define NANA_ENABLE_AUDIO", "//#define NANA_ENABLE_AUDIO")
+            lib_opt += " -DNANA_CMAKE_ENABLE_AUDIO:BOOL=ON"
         
         if self.options.enable_png:
-            lib_opt += " -DENABLE_PNG:BOOL=ON"
+            lib_opt += " -DNANA_CMAKE_ENABLE_PNG:BOOL=ON"
         
         if self.options.enable_jpeg:
-            lib_opt += " -DENABLE_JPEG:BOOL=ON"
+            lib_opt += " -DNANA_CMAKE_ENABLE_JPEG:BOOL=ON"
 
         self.run('cmake %s/nana %s %s' % (self.conanfile_directory, cmake.command_line, lib_opt))
         self.run("cmake --build . %s" % cmake.build_config)
 
 
     def package(self):
-        self.copy("*.*", dst="include", src="nana/include")
-        self.copy("*.*", dst="source", src="nana/source")
+        self.copy("*", dst="include", src="nana/include")
+        self.copy("*", dst="source", src="nana/source")
         self.copy("*.lib", dst="lib", src="Release")
         self.copy("*.lib", dst="lib", src="Debug")
         self.copy("*.lib", dst="lib", src="lib")
