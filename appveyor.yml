@@ -5,8 +5,8 @@ environment:
     PYTHON_ARCH: "32"
     
     CONAN_UPLOAD: 1
-    CONAN_REFERENCE: "nana/1.3.0"
-    CONAN_USERNAME: "mojavewastelander"
+    CONAN_REFERENCE: "nana/1.4.0"
+    CONAN_USERNAME: "MojaveWastelander"
     CONAN_CHANNEL: "stable"
     CONAN_TOTAL_PAGES: 4
     
